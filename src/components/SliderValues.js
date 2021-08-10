@@ -35,10 +35,8 @@ const style = makeStyles({
         marginLeft: props => props.button1MarginLeft,
         transform: 'translateY(-30%)',
         zIndex: 1,
-        transition: 'padding .5s',
         '&:hover': {
             cursor: 'pointer',
-            padding: '2px',
         }
     },
     circuloMax: {
@@ -50,10 +48,8 @@ const style = makeStyles({
         position: 'absolute',
         transform: 'translateY(-30%)',
         zIndex: 1,
-        transition: 'padding .5s',
         '&:hover': {
             cursor: 'pointer',
-            padding: '2px',
         }
     },
     labelPriceMin: {
@@ -115,15 +111,11 @@ const SliderValues = ({ values }) => {
                     setAmount({...amount, min: left1});
                 }
     
-                shiftX2 = ev.pageX - button2Coords.left;
-                let left2 = ev.pageX - shiftX2 - sliderCoords.left;
-                left2 = parseFloat(parseFloat(parseInt(left2) + '.99').toFixed(2));
-                console.log(left1 + ' - ' + left2)
-                if(left1 < left2 && values.includes(left1)) {
+                if(left1 < amount.max && values.includes(left1)) {
                     setStylesProps({
                         ...stylesProps,
                         button1MarginLeft: left1,
-                        betweenWidth: (parseInt(left2) - parseInt(left1)),
+                        betweenWidth: (parseInt(amount.max) - parseInt(left1)),
                         betweenMarginLeft: left1,
                     });
                 }
@@ -134,7 +126,6 @@ const SliderValues = ({ values }) => {
                 const marginMove = ev.pageX;
                 let left2 = marginMove - shiftX2 - sliderCoords.left;
                 left2 = parseFloat(parseFloat(parseInt(left2) + '.99').toFixed(2));
-                console.log(left2)
                 const marginRight = slider.offsetWidth - button2.offsetWidth;
                 if (left2 < 0) left2 = 0;
                 if (left2 > marginRight) left2 = marginRight;
@@ -142,16 +133,12 @@ const SliderValues = ({ values }) => {
                     setAmount({...amount, max: left2});
                 }
                 
-                shiftX1 = ev.pageX - button1Coords.left;
-                let left1 = ev.pageX - shiftX1 - sliderCoords.left;
-                left1 = parseFloat(parseFloat(parseInt(left1) + '.99').toFixed(2));
-
-                if(left1 < left2 && values.includes(left2)) {
+                if(amount.min < left2 && values.includes(left2)) {
                     setStylesProps({
                         ...stylesProps,
                         button2MarginLeft: left2,
-                        betweenWidth: (parseInt(left2) - parseInt(left1)),
-                        betweenMarginLeft: left1,
+                        betweenWidth: (parseInt(left2) - parseInt(amount.min)),
+                        betweenMarginLeft: amount.min,
                     });
                 }
             };
