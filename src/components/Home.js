@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core';
 const styles = makeStyles({
     container: {
         height: '100vh',
-        // position: 'relative',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'

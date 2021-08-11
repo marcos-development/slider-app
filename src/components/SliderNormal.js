@@ -103,7 +103,7 @@ const style = makeStyles({
     }
 });
 
-const SliderRange = ({ min, max }) => {
+const SliderNormal = ({ min, max }) => {
     const history = useHistory();
     const [ rango, setRango ] = useState({});
     const [ stylesProps, setStylesProps ] = useState({});
@@ -175,8 +175,8 @@ const SliderRange = ({ min, max }) => {
             };
         }
 
-        document.onmouseup = function(ev) {
-            ev.target.style.cursor = "pointer";
+        document.onmouseup = function(eve) {
+            eve.target.style.cursor = "pointer";
             document.onmousemove = document.onmouseup = null;
         };
     };
@@ -253,11 +253,11 @@ const SliderRange = ({ min, max }) => {
             <h1 className={classes.subtitle}>Normal Range</h1>
             {rango.min 
                 ? <div id="sliderContent" className={classes.barra}>
-                    <input type="number" className={classes.labelPriceMin} onChange={(e)=>handleChangeAmount(e, 'min')} value={`${amount.min}`} />
+                    <input data-testid="inputMin" type="number" className={classes.labelPriceMin} onChange={(e)=>handleChangeAmount(e, 'min')} value={`${amount.min}`} />
                     <div id="rangeBetween" className={classes.rangeBetween}></div>
                     <div id="buttonMin" className={classes.circuloMin} onMouseDown={e => handleMouseMove(e, 'min')}></div>
                     <div id="buttonMax" className={classes.circuloMax} onMouseDown={e => handleMouseMove(e, 'max')}></div>
-                    <input type="numer" className={classes.labelPriceMax} onChange={(e)=>handleChangeAmount(e, 'max')} value={`${amount.max}`} />
+                    <input data-testid="inputMax" type="numer" className={classes.labelPriceMax} onChange={(e)=>handleChangeAmount(e, 'max')} value={`${amount.max}`} />
                 </div>
                 : null
             }
@@ -269,9 +269,9 @@ const SliderRange = ({ min, max }) => {
         </div>
     );
 };
-SliderRange.propTypes = {
+SliderNormal.propTypes = {
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
 };
 
-export default SliderRange;
+export default SliderNormal;

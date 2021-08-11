@@ -97,7 +97,7 @@ const SliderValues = ({ values }) => {
 
 
     useEffect(() => {
-        values.sort();
+        values.sort((a, b) => a - b);
         let min = values[0];
         let max = values[values.length-1]
         setRango({ min , max });
@@ -124,7 +124,9 @@ const SliderValues = ({ values }) => {
         
         if (param === 'min') {
             document.onmousemove = (ev) => {
+                console.log("holaaaaaaaaa")
                 const marginMove = ev.pageX;
+                console.log(marginMove)
                 let left1 = marginMove - shiftX1 - sliderCoords.left;
                 left1 = parseFloat(parseFloat(parseInt(left1) + '.99').toFixed(2));
                 const marginRight = slider.offsetWidth - button1.offsetWidth;
@@ -167,8 +169,8 @@ const SliderValues = ({ values }) => {
             };
         }
 
-        document.onmouseup = function(ev) {
-            ev.target.style.cursor = "pointer";
+        document.onmouseup = function(eve) {
+            eve.target.style.cursor = "pointer";
             document.onmousemove = document.onmouseup = null;
         };
     };
@@ -189,11 +191,8 @@ const SliderValues = ({ values }) => {
                 ? <div id="sliderContent" className={classes.barra}>
                     <span className={classes.labelPriceMin}>{amount.min}€</span>
                     <div id="rangeBetween" className={classes.rangeBetween}></div>
-                    <div id="buttonMin" className={classes.circuloMin} onMouseDown={e => handleMouseMove(e, 'min')}>
-                        
-                    </div>
-                    <div id="buttonMax" className={classes.circuloMax} onMouseDown={e => handleMouseMove(e, 'max')}>
-                    </div>
+                    <div data-testid="test_min" id="buttonMin" className={classes.circuloMin} onMouseDown={e => handleMouseMove(e, 'min')}></div>
+                    <div data-testid="test_max" id="buttonMax" className={classes.circuloMax} onMouseDown={e => handleMouseMove(e, 'max')}></div>
                     <span className={classes.labelPriceMax}>{amount.max}€</span>
                 </div> 
                 : null

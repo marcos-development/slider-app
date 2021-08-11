@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import SliderRange from './SliderRange';
+import SliderNormal from './SliderNormal';
 import SliderValues from './SliderValues';
 
 
@@ -12,11 +12,11 @@ const Range = ({ type }) => {
     const [ values, setValues ] = useState([]);
 
     useEffect(async () => {
-        if (type === 'range') {
+        if (type === 'normal') {
             const api = await axios.get('http://demo1812499.mockable.io/exercise1');
             setRango({ ...api.data });
         }
-        if(type === 'values') {
+        if(type === 'fixed') {
             const api = await axios.get('http://demo1812499.mockable.io/exercise2');
             setValues([ ...api.data.values ]);
         }
@@ -25,8 +25,8 @@ const Range = ({ type }) => {
     return (
         <div>
             
-            { type === 'range' 
-                ? rango.min || rango.max ? <SliderRange min={rango.min} max={rango.max} /> : null
+            { type === 'normal' 
+                ? rango.min || rango.max ? <SliderNormal min={rango.min} max={rango.max} /> : null
                 : values.length ? <SliderValues values={values} /> : null
             }
             

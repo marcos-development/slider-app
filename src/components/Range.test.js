@@ -12,9 +12,8 @@ function sleep(ms) {
 describe('<Range /> - Bloque de tests', () => {
 
     test('Basic tests', async () => {
-        const component = render(<Range type={'range'} />);
+        const component = render(<Range type={'normal'} />);
         await act(() => sleep(2000));
         component.getByText('Normal Range');
     });
-
 });
