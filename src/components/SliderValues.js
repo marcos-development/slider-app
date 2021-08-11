@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 
 const style = makeStyles({
@@ -8,6 +10,13 @@ const style = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    subtitle: {
+        marginTop: '-200px',
+        position: 'absolute',
+        fontFamily: 'arial, Helvetica, sans-serif',
+        fontSize: '40px',
+        color: '#0da520'
     },
     barra: {
         height: '10px',
@@ -64,9 +73,23 @@ const style = makeStyles({
         color: 'black',
         marginLeft: props => `${props.sliderWidth + 20}px`,
     },
+    buttonStyle: {
+        backgroundColor: '#067909',
+        display: 'flex',
+        color: 'white',
+        margin: '20px',
+        marginTop: '200px',
+        padding: '5px 8px',
+        borderRadius: '10px',
+        '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#36b34b',
+        }
+    }
 });
 
 const SliderValues = ({ values }) => {
+    const history = useHistory();
     const [ rango, setRango ] = useState({});
     const [ stylesProps, setStylesProps ] = useState({});
     const [amount, setAmount] = useState({});
@@ -161,6 +184,7 @@ const SliderValues = ({ values }) => {
 
     return (
         <div className={classes.container}>
+            <h1 className={classes.subtitle}>Fixed Range</h1>
             {rango.min 
                 ? <div id="sliderContent" className={classes.barra}>
                     <span className={classes.labelPriceMin}>{amount.min}€</span>
@@ -174,8 +198,15 @@ const SliderValues = ({ values }) => {
                 </div> 
                 : null
             }
+            <span
+                className={classes.buttonStyle}
+                onClick={()=>history.push('/')}
+            >Go to Menu</span>
         </div>
-    )
-}
+    );
+};
+SliderValues.propTypes = {
+    values: PropTypes.array.isRequired,
+};
 
-export default SliderValues
+export default SliderValues;

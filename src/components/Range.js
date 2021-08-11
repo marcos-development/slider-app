@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import SliderRange from './SliderRange';
 import SliderValues from './SliderValues';
 
@@ -31,6 +32,9 @@ const Range = ({ type }) => {
             
         </div>
     );
+};
+Range.propTypes = {
+    type: PropTypes.string.isRequired,
 };
 
 export default Range;

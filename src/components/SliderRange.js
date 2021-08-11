@@ -1,5 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+// import { debounce } from '../helpers/functions';
+
+const debounce = (fn, delay) => {
+  let timeoutId;
+  return function(...args) {
+    clearInterval(timeoutId);
+    timeoutId = setTimeout(() => fn.apply(this, args), delay);
+  };
+};
 
 const style = makeStyles({
     container: {
@@ -8,6 +19,13 @@ const style = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    subtitle: {
+        marginTop: '-200px',
+        position: 'absolute',
+        fontFamily: 'arial, Helvetica, sans-serif',
+        fontSize: '40px',
+        color: '#0da520'
     },
     barra: {
         height: '10px',
@@ -38,7 +56,7 @@ const style = makeStyles({
         transition: 'padding .5s',
         '&:hover': {
             cursor: 'pointer',
-            padding: '2px',
+            padding: '1px',
         }
     },
     circuloMax: {
@@ -53,7 +71,7 @@ const style = makeStyles({
         transition: 'padding .5s',
         '&:hover': {
             cursor: 'pointer',
-            padding: '2px',
+            padding: '1px',
         }
     },
     labelPriceMin: {
@@ -70,9 +88,23 @@ const style = makeStyles({
         color: 'black',
         marginLeft: props => `${props.sliderWidth + 20}px`,
     },
+    buttonStyle: {
+        backgroundColor: '#067909',
+        display: 'flex',
+        color: 'white',
+        margin: '20px',
+        marginTop: '200px',
+        padding: '5px 8px',
+        borderRadius: '10px',
+        '&:hover': {
+            cursor: 'pointer',
+            backgroundColor: '#36b34b',
+        }
+    }
 });
 
 const SliderRange = ({ min, max }) => {
+    const history = useHistory();
     const [ rango, setRango ] = useState({});
     const [ stylesProps, setStylesProps ] = useState({});
     const [amount, setAmount] = useState({});
@@ -157,49 +189,89 @@ const SliderRange = ({ min, max }) => {
         }
     };
 
-    const handleChangeAmount = (e, type) => {
-        const value = parseInt(e.target.value);
+    const debounceCallback = useCallback(
+        debounce((value, type) => {
+            if (type === 'min') {
+                if (value >= rango.min && value < amount.max) {
+                    setAmount({
+                        ...amount,
+                        [type]: value
+                    });
+                    setStylesProps({
+                        ...stylesProps,
+                        button1MarginLeft: value,
+                        betweenWidth: (amount.max - value),
+                        betweenMarginLeft: value,
+                    });
+                } else {
+                    setAmount({
+                        ...amount,
+                        [type]: rango.min
+                    });
+                    setStylesProps({
+                        ...stylesProps,
+                        button1MarginLeft: 0,
+                        betweenWidth: (amount.max),
+                        betweenMarginLeft: 0,
+                    });
+                }
+            } else {
+                if (value <= rango.max && value > amount.min) {
+                    setAmount({
+                        ...amount,
+                        [type]: value
+                    });
+                    setStylesProps({
+                        ...stylesProps,
+                        button2MarginLeft: value,
+                        betweenWidth: (value - amount.min),
+                        betweenMarginLeft: amount.min,
+                    });
+                } else {
+                    setAmount({
+                        ...amount,
+                        [type]: rango.max
+                    });
+                    setStylesProps({
+                        ...stylesProps,
+                        button2MarginLeft: rango.max,
+                        betweenWidth: (rango.max - amount.min),
+                        betweenMarginLeft: amount.min,
+                    });
+                }
+            }
+        }, 2000)
+        , [amount, rango]);
 
-        if (type === 'min' && value >= rango.min && value < amount.max) {
-            setAmount({
-                ...amount,
-                [type]: value
-            });
-            setStylesProps({
-                ...stylesProps,
-                button1MarginLeft: value,
-                betweenWidth: (amount.max - value),
-                betweenMarginLeft: value,
-            });
-        }
-        if (type === 'max' && value <= rango.max && value > amount.min) {
-            setAmount({
-                ...amount,
-                [type]: value
-            });
-            setStylesProps({
-                ...stylesProps,
-                button2MarginLeft: value,
-                betweenWidth: (value - amount.min),
-                betweenMarginLeft: amount.min,
-            });
-        }
-    }
+    const handleChangeAmount = ({ target: { value } }, type) => {
+        setAmount({...amount, [type]: value});
+        debounceCallback(parseInt(value), type);
+    };
 
     return (
         <div className={classes.container}>
+            <h1 className={classes.subtitle}>Normal Range</h1>
             {rango.min 
                 ? <div id="sliderContent" className={classes.barra}>
-                    <input type="text" className={classes.labelPriceMin} onChange={(e)=>handleChangeAmount(e, 'min')} value={`${amount.min}.99€`} />
+                    <input type="number" className={classes.labelPriceMin} onChange={(e)=>handleChangeAmount(e, 'min')} value={`${amount.min}`} />
                     <div id="rangeBetween" className={classes.rangeBetween}></div>
                     <div id="buttonMin" className={classes.circuloMin} onMouseDown={e => handleMouseMove(e, 'min')}></div>
                     <div id="buttonMax" className={classes.circuloMax} onMouseDown={e => handleMouseMove(e, 'max')}></div>
-                    <input type="text" className={classes.labelPriceMax} onChange={(e)=>handleChangeAmount(e, 'max')} value={`${amount.max}.99€`} />
+                    <input type="numer" className={classes.labelPriceMax} onChange={(e)=>handleChangeAmount(e, 'max')} value={`${amount.max}`} />
                 </div>
                 : null
             }
+
+            <span
+                className={classes.buttonStyle}
+                onClick={()=>history.push('/')}
+            >Go to Menu</span>
         </div>
-    )
-}
+    );
+};
+SliderRange.propTypes = {
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+};
 
 export default SliderRange;
