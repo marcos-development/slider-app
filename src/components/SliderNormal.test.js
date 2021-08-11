@@ -26,28 +26,28 @@ describe('<SliderNormal />', () => {
         expect(inputMin.value).toBe("20");
     });
 
-    // test("Test Validate Min: input value minor to minimun", async () => {
+    test("Test Validate Min: input value minor to minimun", async () => {
         
-    //     const inputMin = screen.getByTestId('inputMin');
-    //     fireEvent.change(inputMin, { target: { value: 5 } });
-    //     await act(() => sleep(2000));
-    //     expect(inputMin.value).toBe("10");
-    // });
+        const inputMin = screen.getByTestId('inputMin');
+        fireEvent.change(inputMin, { target: { value: 5 } });
+        await act(() => sleep(2000));
+        expect(inputMin.value).toBe("10");
+    });
 
-    // test('Test Validate Max: input value mayor to maximo', async () => {
-    //     const inputMax = screen.getByTestId('inputMax');
-    //     fireEvent.change(inputMax, { target: { value: 550 } });
-    //     await act(() => sleep(2000));
-    //     expect(inputMax.value).toBe("500");
-    // });
+    test('Test Validate Max: input value mayor to maximo', async () => {
+        const inputMax = screen.getByTestId('inputMax');
+        fireEvent.change(inputMax, { target: { value: 550 } });
+        await act(() => sleep(2000));
+        expect(inputMax.value).toBe("500");
+    });
 
-    // test('Test Validate Compare: input value min exceed to max', async () => {
-    //     const inputMin = screen.getByTestId('inputMin');
-    //     const inputMax = screen.getByTestId('inputMax');
-    //     fireEvent.change(inputMax, { target: { value: 250 } });
-    //     await act(() => sleep(2000));
-    //     fireEvent.change(inputMin, { target: { value: 450 } });
-    //     await act(() => sleep(2000));
-    //     expect(inputMin.value).toBe("10");
-    // });
+    test('Test Validate Compare: input value min exceed to max', async () => {
+        const inputMin = screen.getByTestId('inputMin');
+        const inputMax = screen.getByTestId('inputMax');
+        fireEvent.change(inputMax, { target: { value: 250 } });
+        await act(() => sleep(2000));
+        fireEvent.change(inputMin, { target: { value: 450 } });
+        await act(() => sleep(2000));
+        expect(inputMin.value).toBe("10");
+    });
 });
