@@ -124,9 +124,7 @@ const SliderValues = ({ values }) => {
         
         if (param === 'min') {
             document.onmousemove = (ev) => {
-                console.log("holaaaaaaaaa")
                 const marginMove = ev.pageX;
-                console.log(marginMove)
                 let left1 = marginMove - shiftX1 - sliderCoords.left;
                 left1 = parseFloat(parseFloat(parseInt(left1) + '.99').toFixed(2));
                 const marginRight = slider.offsetWidth - button1.offsetWidth;
@@ -171,6 +169,10 @@ const SliderValues = ({ values }) => {
 
         document.onmouseup = function(eve) {
             eve.target.style.cursor = "pointer";
+            const content = document.getElementById("divcontent");
+            if (content.style.cursor === 'pointer') {
+                content.style.cursor = '';
+            }
             document.onmousemove = document.onmouseup = null;
         };
     };
@@ -185,7 +187,7 @@ const SliderValues = ({ values }) => {
 
 
     return (
-        <div className={classes.container}>
+        <div id="divcontent" className={classes.container}>
             <h1 className={classes.subtitle}>Fixed Range</h1>
             {rango.min 
                 ? <div id="sliderContent" className={classes.barra}>

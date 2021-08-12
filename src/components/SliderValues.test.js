@@ -24,13 +24,4 @@ describe('<SliderValues />', () => {
         screen.getByText("1.99€");
         screen.getByText("100.99€");
     });
-
-    test('Test moved buttons', async () => {
-        const inputMin = screen.getByTestId('test_min');
-        fireEvent.mouseMove(inputMin, {pageX: 750});
-        await act(() => sleep(1000));
-        screen.getByText("1.99€");
-        // fireEvent.change(inputMin, { style: { 'margin-left': 250 } });
-
-    });
 });
