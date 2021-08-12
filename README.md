@@ -30,8 +30,6 @@ $ npm run test - Test e2e
 ## build with 🛠️
 ```
 [ReactJS](https://es.reactjs.org/) - JavaScript Framework
-[Node](https://nodejs.org/es/) - Node Package Managment
 [Git](https://git-scm.com/downloads) - Version Control System
-[ESLint](https://eslint.org/) - Sintax and Problems
 [Jest](https://jestjs.io/es-ES/docs/getting-started) - JavaScript Testing Framework
 ```
